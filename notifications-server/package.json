@@ -1,0 +1,14 @@
+{
+  "name": "notifications-server",
+  "version": "1.0.0",
+  "description": "A server applications that sends notifications to the connected clients when another server application informs it of changes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^2.2.0"
+  }
+}
