@@ -20,4 +20,7 @@
 
     //Dashboard
     <string name="blue_parade">Blue Parade</string>
+    <string name="events">Events</string>
+    <string name="profile">Profile</string>
+    <string name="favorites">Favorites</string>
 </resources>
