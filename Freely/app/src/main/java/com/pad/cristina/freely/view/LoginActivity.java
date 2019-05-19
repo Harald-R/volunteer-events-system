@@ -1,5 +1,6 @@
 package com.pad.cristina.freely.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
                /* if(!ValidityUtils.isEmailValid(txt))
                     Toast.makeText(LoginActivity.this,"Email-ul "+txt+" este gresit",Toast.LENGTH_SHORT).show();
                 else{*/
-                    Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                     startActivity(intent);
                 //}
             }

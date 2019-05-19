@@ -1,6 +1,10 @@
 package com.pad.cristina.freely.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,6 +12,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.pad.cristina.freely.R;
 import com.pad.cristina.freely.util.ZoomOutPageTransformer;
@@ -37,6 +42,28 @@ public class DashboardActivity extends FragmentActivity  implements EventFragmen
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(pagerAdapter);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_profile:
+                        Intent intent1 = new Intent(DashboardActivity.this, ProfileActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_events:
+                        Intent intent3 = new Intent(DashboardActivity.this, DashboardActivity.class);
+                        startActivity(intent3);
+                        break;
+                    case R.id.action_favorites:
+                        Intent intent2 = new Intent(DashboardActivity.this, DashboardActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -72,6 +99,26 @@ public class DashboardActivity extends FragmentActivity  implements EventFragmen
     }
     @Override
     public void onFragmentInteraction(Uri uri){
-        //no-op
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_profile:
+                        Intent intent1 = new Intent(DashboardActivity.this, ProfileActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.action_events:
+                        Intent intent3 = new Intent(DashboardActivity.this, DashboardActivity.class);
+                        startActivity(intent3);
+                        break;
+                    case R.id.action_favorites:
+                        Intent intent2 = new Intent(DashboardActivity.this, DashboardActivity.class);
+                        startActivity(intent2);
+                        break;
+                }
+                return true;
+            }
+        });
     }
 }
