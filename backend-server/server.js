@@ -21,6 +21,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+// Routes for REST API
 var route_auth = require('./api/routes/auth.route');
 var route_users = require('./api/routes/users.route');
 var route_events = require('./api/routes/events.route');
@@ -35,3 +36,11 @@ app.use(function(req, res) {
 app.listen(port);
 
 console.log('Backend server started on: ' + port);
+
+// Connect to the notifications server
+var io = require('socket.io-client'),
+    notificationServer = io.connect('http://localhost:3001');
+
+// This is what the other client applications will do:
+//   send their id in a dedicated message after connecting to the server
+notificationServer.emit('client_data', { id: 'MY_ID' });
