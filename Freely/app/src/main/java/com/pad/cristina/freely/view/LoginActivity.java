@@ -41,18 +41,15 @@ public class LoginActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        TextView myTextView = findViewById(R.id.signInText);
-
         String responseJsonStr=getJSON("http://192.168.43.192:3000/api/auth/login");
-        String token="tokenHURR";
+        String token="";
         try {
             JSONParser parser = new JSONParser();
             JSONObject jsonObject = (JSONObject)parser.parse(responseJsonStr);
             token= (String) jsonObject.get("token");
-        }catch (Exception ex){
+        }catch (Exception ex) {
             ex.printStackTrace();
         }
-        myTextView.setText(token);
 
         check_login_validity(btnLogin, emailEditTxt);
     }
