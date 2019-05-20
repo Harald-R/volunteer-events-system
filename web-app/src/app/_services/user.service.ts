@@ -19,14 +19,14 @@ export class UserService {
     }
 
     register(user: User) {
-      const name = user.name;
-      const email = user.email;
-      const password = user.password;
-      const type = 2;
-      const c = 'name=' + name + '&email=' + email + '&password=' + password + '&type=' + type;
-      console.log(c);
-      return this.http.post('http://localhost:3000/api/auth/register', JSON.stringify({name, email, password, type}), {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')});
-
+      return this.http.post('http://localhost:3000/api/auth/register', JSON.stringify({
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          type: 2
+        }), {
+            headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+        });
     }
     update(user: User) {
         return this.http.put(`${environment.apiUrl}/users/${user.id}`, user);
