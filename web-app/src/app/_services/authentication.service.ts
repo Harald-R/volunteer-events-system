@@ -6,6 +6,7 @@ import { timeout } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { getOrCreateCurrentQueries } from '@angular/core/src/render3/instructions';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -14,6 +15,7 @@ export class AuthenticationService {
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        // this.currentUserSubject = new BehaviorSubject<User>(new User());
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -32,13 +34,25 @@ export class AuthenticationService {
                 'Content-Type': 'application/x-www-form-urlencoded'
             })
         }).pipe(
-            timeout(5000) //5 seconds
-        );
-    }
+            timeout(5000), //5 seconds
+            map(user => {
+                // login successful if there's a jwt token in the response
+                if (user && user.token) {
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                }
+
+                return user;
+                }
+            )
+        )
+    };
     
     logout() {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next(null);
+        // this.currentUserSubject.value.token = null; 
     }
 }
