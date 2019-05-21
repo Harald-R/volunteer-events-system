@@ -1,6 +1,7 @@
 'use strict';
 
-var userController = require('../controllers/users.controller')
+var notificationsServer = require('../../notifications_server');
+var userController = require('../controllers/users.controller');
 var mongoose = require('mongoose'),
     Event = mongoose.model('Events');
 
@@ -76,6 +77,15 @@ exports.add_participant = function(req, res) {
         event.update({ $push: { participants: req.userId } }, { upsert: true }, function(err, participant) {
             if (err)
                 return res.status(500).send(err);
+
+            notificationsServer.emit('new_participant',
+            {
+                eventId: event._id,
+                eventName: event.name,
+                participantId: participant._id,
+                participantName: participant.name,
+                notify: event.creatorId
+            });
             res.status(200).json({ message: 'Participant successfully added' });
         });
     });
@@ -114,6 +124,12 @@ exports.add_post = function(req, res) {
     Event.findOneAndUpdate({ _id: req.params.eventId }, { $push: { posts: req.body } }, { upsert: true }, function(err, event) {
         if (err)
             return res.status(500).send(err);
+
+        notificationsServer.emit('new_post', {
+            eventId: event._id,
+            eventName: event.name,
+            notify: event.participants
+        });
         res.status(200).json(event);
     });
 };
