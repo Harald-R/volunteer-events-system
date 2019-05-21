@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.pad.cristina.freely.R;
 import com.pad.cristina.freely.model.UserInfo;
+import com.pad.cristina.freely.util.ApiRequestsUtil;
 import com.pad.cristina.freely.util.ValidityUtils;
 
 import org.json.simple.JSONObject;
@@ -23,6 +24,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -82,7 +85,11 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Email-ul " + email + " este gresit", Toast.LENGTH_SHORT).show();
                 } else {
                     String password = passwEditTxt.getText().toString();
-                    String responseJsonStr = getJSON("http://192.168.43.192:3000/api/auth/login", email, password);
+                    Map<String, String> body = new HashMap<>();
+                    body.put("email", email);
+                    body.put("password", password);
+                    String responseJsonStr = ApiRequestsUtil.sendRequest("http://192.168.43.192:3000/api/auth/login", ApiRequestsUtil.REQUEST_TYPES.POST, body);
+
                     String token = null;
                     try {
                         JSONParser parser = new JSONParser();
