@@ -60,7 +60,7 @@ public class EventFragment extends Fragment {
         interested.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String participant = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/" + "5ce3ca0cd416687156d1ed6e" + "/participants", post, null);
+                String participant = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/" + "5ce3f55739dba01f7a014e7c" + "/participants", post, null);
                 try {
                     JSONParser parser = new JSONParser();
                     JSONObject ansJson = (JSONObject) parser.parse(participant);
@@ -77,7 +77,7 @@ public class EventFragment extends Fragment {
     }
 
     private void setEventName(ViewGroup rootView) {
-        String event = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/"+"5ce3ca0cd416687156d1ed6e", ApiRequestsUtil.REQUEST_TYPES.GET, null);
+        String event = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/"+"5ce3f55739dba01f7a014e7c", ApiRequestsUtil.REQUEST_TYPES.GET, null);
         try {
             JSONParser parser = new JSONParser();
             JSONObject eventJson = (JSONObject) parser.parse(event);
