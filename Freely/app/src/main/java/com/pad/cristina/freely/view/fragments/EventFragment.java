@@ -83,7 +83,6 @@ public class EventFragment extends Fragment {
             JSONObject eventJson = (JSONObject) parser.parse(event);
             String name;
             name = (String) eventJson.get("name");
-            Log.d("ooooof",name);
             final TextView eventName = rootView.findViewById(R.id.eventName);
             eventName.setText(name);
         } catch (Exception ex) {
