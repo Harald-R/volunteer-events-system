@@ -5,7 +5,8 @@ var express = require('express'),
     User = require('./api/models/users.model'),
     Event = require('./api/models/events.model'),
     bodyParser = require('body-parser'),
-    cors = require('cors');
+    cors = require('cors'),
+    notificationsServer = require('./notifications_server');
 
 // mongos instance url connection
 mongoose.Promise = global.Promise;
@@ -37,10 +38,3 @@ app.listen(port);
 
 console.log('Backend server started on: ' + port);
 
-// Connect to the notifications server
-var io = require('socket.io-client'),
-    notificationServer = io.connect('http://localhost:3001');
-
-// This is what the other client applications will do:
-//   send their id in a dedicated message after connecting to the server
-notificationServer.emit('client_data', { id: 'MY_ID' });
