@@ -2,6 +2,8 @@ package com.pad.cristina.freely.util;
 
 import android.util.Log;
 
+import com.pad.cristina.freely.model.UserInfo;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,6 +53,7 @@ public class ApiRequestsUtil {
             URL u = new URL(url);
             con = (HttpURLConnection) u.openConnection();
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("x-access-token", UserInfo.getToken());
             con.setRequestMethod(type.getType());
             if (type.getType().equals("POST"))
                 con.setDoOutput(true);

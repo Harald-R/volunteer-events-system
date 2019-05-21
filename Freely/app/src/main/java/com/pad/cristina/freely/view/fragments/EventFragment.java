@@ -6,39 +6,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pad.cristina.freely.R;
 import com.pad.cristina.freely.util.ApiRequestsUtil;
 import com.pad.cristina.freely.view.DashboardActivity;
+import com.pad.cristina.freely.view.LoginActivity;
 import com.pad.cristina.freely.view.ProfileActivity;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EventFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EventFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EventFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,41 +35,10 @@ public class EventFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EventFragment newInstance(String param1, String param2) {
-        EventFragment fragment = new EventFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        String events = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events", ApiRequestsUtil.REQUEST_TYPES.GET, null);
-
-        try {
-            JSONParser parser = new JSONParser();
-            JSONArray eventsJson = (JSONArray) parser.parse(events);
-            Log.d("ASD", eventsJson.toJSONString());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -88,16 +46,51 @@ public class EventFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_event, container, false);
+        final FloatingActionButton interested = rootView.findViewById(R.id.interested);
+        final FloatingActionButton notInterested = rootView.findViewById(R.id.notInterested);
+
+        setEventName(rootView);
+        setActionInterested(interested, ApiRequestsUtil.REQUEST_TYPES.POST, "Added to favorites");
+        setActionInterested(notInterested, ApiRequestsUtil.REQUEST_TYPES.DELETE, "Removed from favorites");
 
         return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    private void setActionInterested(FloatingActionButton interested,final ApiRequestsUtil.REQUEST_TYPES post, final String s) {
+        interested.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String participant = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/" + "5ce3ca0cd416687156d1ed6e" + "/participants", post, null);
+                try {
+                    JSONParser parser = new JSONParser();
+                    JSONObject ansJson = (JSONObject) parser.parse(participant);
+                    String message;
+                    message = (String) ansJson.get("message");
+                    if (message != null) {
+                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void setEventName(ViewGroup rootView) {
+        String event = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events/"+"5ce3ca0cd416687156d1ed6e", ApiRequestsUtil.REQUEST_TYPES.GET, null);
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject eventJson = (JSONObject) parser.parse(event);
+            String name;
+            name = (String) eventJson.get("name");
+            Log.d("ooooof",name);
+            final TextView eventName = rootView.findViewById(R.id.eventName);
+            eventName.setText(name);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -115,17 +108,6 @@ public class EventFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
