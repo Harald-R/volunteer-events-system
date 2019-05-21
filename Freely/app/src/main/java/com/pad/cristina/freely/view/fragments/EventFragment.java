@@ -7,14 +7,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.pad.cristina.freely.R;
+import com.pad.cristina.freely.util.ApiRequestsUtil;
 import com.pad.cristina.freely.view.DashboardActivity;
 import com.pad.cristina.freely.view.ProfileActivity;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,6 +70,16 @@ public class EventFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        String events = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/events", ApiRequestsUtil.REQUEST_TYPES.GET, null);
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONArray eventsJson = (JSONArray) parser.parse(events);
+            Log.d("ASD", eventsJson.toJSONString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

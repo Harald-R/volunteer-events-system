@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String, String> body = new HashMap<>();
                     body.put("email", email);
                     body.put("password", password);
-                    String responseJsonStr = ApiRequestsUtil.sendRequest("http://192.168.43.192:3000/api/auth/login", ApiRequestsUtil.REQUEST_TYPES.POST, body);
+                    String responseJsonStr = ApiRequestsUtil.sendRequest(ApiRequestsUtil.BASE_URL + "/api/auth/login", ApiRequestsUtil.REQUEST_TYPES.POST, body);
 
                     String token = null;
                     try {

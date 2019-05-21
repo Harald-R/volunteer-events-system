@@ -1,5 +1,7 @@
 package com.pad.cristina.freely.util;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -26,28 +28,35 @@ public class ApiRequestsUtil {
         public String getType() {
             return type;
         }
-
     };
+
+    public static String BASE_URL = "http://192.168.43.192:3000";
 
     public static String sendRequest(String url, REQUEST_TYPES type, Map<String, String> body) {
         HttpURLConnection con = null;
         try {
             // Prepare request body from dictionary
             String reqBody = "";
-            for (Iterator<Map.Entry<String, String>> it = body.entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<String, String> entry = it.next();
-                reqBody += entry.getKey() + "=" + entry.getValue();
+            if (body != null) {
+                for (Iterator<Map.Entry<String, String>> it = body.entrySet().iterator(); it.hasNext(); ) {
+                    Map.Entry<String, String> entry = it.next();
+                    reqBody += entry.getKey() + "=" + entry.getValue();
 
-                if (it.hasNext())
-                    reqBody += "&";
+                    if (it.hasNext())
+                        reqBody += "&";
+                }
             }
 
             // Open connection to server
             URL u = new URL(url);
             con = (HttpURLConnection) u.openConnection();
+            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.setRequestMethod(type.getType());
-            con.setDoOutput(true);
-            con.getOutputStream().write(reqBody.getBytes());
+            if (type.getType().equals("POST"))
+                con.setDoOutput(true);
+
+            if (!reqBody.isEmpty())
+                con.getOutputStream().write(reqBody.getBytes());
             con.connect();
 
             if (con.getResponseCode() == 200) {
@@ -58,6 +67,17 @@ public class ApiRequestsUtil {
                     sb.append(line + "\n");
                 }
                 br.close();
+                Log.d("ASD", "res: " + sb.toString());
+                return sb.toString();
+            } else {
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line + "\n");
+                }
+                br.close();
+                Log.d("ASD", "err: " + sb.toString());
                 return sb.toString();
             }
         } catch (MalformedURLException ex) {
