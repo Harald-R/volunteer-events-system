@@ -14,8 +14,8 @@
         android:layout_marginBottom="22dp"
         android:text="@string/sign_in_text"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintStart_toStartOf="@+id/email"
+        app:layout_constraintBottom_toTopOf="@+id/emailR"
+        app:layout_constraintStart_toStartOf="@+id/emailR"
         app:layout_constraintTop_toBottomOf="@+id/loginImage" />
 
     <Button
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toTopOf="@+id/registerText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordR" />
 
     <ImageView
         android:id="@+id/loginImage"
@@ -45,7 +45,7 @@
         app:srcCompat="@mipmap/logo" />
 
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/emailR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -53,14 +53,14 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:hint="@string/e_mail"
-        app:layout_constraintBottom_toTopOf="@+id/password"
+        app:layout_constraintBottom_toTopOf="@+id/passwordR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInText"
         />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/passwordR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
@@ -69,10 +69,10 @@
         android:inputType="textPassword"
         android:hint="@string/password"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
-        app:layout_constraintEnd_toEndOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="@+id/emailR"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintStart_toStartOf="@+id/emailR"
+        app:layout_constraintTop_toBottomOf="@+id/emailR" />
 
     <TextView
         android:id="@+id/registerText"

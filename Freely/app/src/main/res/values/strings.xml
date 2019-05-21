@@ -23,4 +23,6 @@
     <string name="events">Events</string>
     <string name="profile">Profile</string>
     <string name="favorites">Favorites</string>
+    <string name="register_account">Register account</string>
+    <string name="name_plc">Name</string>
 </resources>

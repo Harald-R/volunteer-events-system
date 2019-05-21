@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,12 +17,6 @@ import com.pad.cristina.freely.util.ValidityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,55 +27,21 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         final Button btnLogin = findViewById(R.id.buttonLogin);
-        final EditText emailEditTxt = findViewById(R.id.email);
-        final EditText passwEditTxt = findViewById(R.id.password);
+        final EditText emailEditTxt = findViewById(R.id.emailR);
+        final EditText passwEditTxt = findViewById(R.id.passwordR);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         login(btnLogin, emailEditTxt, passwEditTxt);
     }
-    public static String getJSON(String url, String email, String password) {
-        HttpURLConnection con = null;
-        try {
-            URL u = new URL(url);
-            con = (HttpURLConnection) u.openConnection();
-            con.setRequestMethod("POST");
-            con.setDoOutput(true);
-            con.getOutputStream().write(("email="+email+"&password="+password).getBytes());
-            con.connect();
 
-            if (con.getResponseCode() == 200) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = br.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                br.close();
-                return sb.toString();
-            }
-        } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (con != null) {
-                try {
-                    con.disconnect();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
     private void login(Button btnRegister, final EditText emailEditTxt, final EditText passwEditTxt) {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String email = emailEditTxt.getText().toString();
                 if (!ValidityUtils.isEmailValid(email)) {
-                    Toast.makeText(LoginActivity.this, "Email-ul " + email + " este gresit", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Email " + email + " is incorrect.", Toast.LENGTH_SHORT).show();
                 } else {
                     String password = passwEditTxt.getText().toString();
                     Map<String, String> body = new HashMap<>();
